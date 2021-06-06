@@ -62,28 +62,29 @@ impl OpcDatagram {
             Ok(mut stream) => {
                 println!("Successfully connected to server in port {}", DEFAULT_PORT);
 
-                stream.write(self.buffer.as_ref()).unwrap();
-                stream.flush().unwrap();
-
-                let msg = b"Hello!";
-
-                stream.write(msg).unwrap();
-                println!("Sent Hello, awaiting reply...");
-
-                let mut data = [0 as u8; 6]; // using 6 byte buffer
-                match stream.read_exact(&mut data) {
-                    Ok(_) => {
-                        if &data == msg {
-                            println!("Reply is ok!");
-                        } else {
-                            let text = from_utf8(&data).unwrap();
-                            println!("Unexpected reply: {}", text);
-                        }
-                    },
-                    Err(e) => {
-                        println!("Failed to receive data: {}", e);
-                    }
+                for x in 0..5 {
+                    stream.write(self.buffer.as_ref()).unwrap();
+                    stream.flush().unwrap();
                 }
+                // let msg = b"Hello!";
+                //
+                // stream.write(msg).unwrap();
+                // println!("Sent Hello, awaiting reply...");
+                //
+                // let mut data = [0 as u8; 6]; // using 6 byte buffer
+                // match stream.read_exact(&mut data) {
+                //     Ok(_) => {
+                //         if &data == msg {
+                //             println!("Reply is ok!");
+                //         } else {
+                //             let text = from_utf8(&data).unwrap();
+                //             println!("Unexpected reply: {}", text);
+                //         }
+                //     },
+                //     Err(e) => {
+                //         println!("Failed to receive data: {}", e);
+                //     }
+                // }
             },
             Err(e) => {
                 println!("Failed to connect: {}", e);
@@ -117,7 +118,7 @@ mod tests {
 
     #[test]
     fn test_send_to_zestyping_opc_server() {
-        let mut migram = OpcDatagram::new( 0, 2048);
+        let mut migram = OpcDatagram::new( 0, 4097);
         migram.fill_magenta();
         migram.send_opc();
     }
