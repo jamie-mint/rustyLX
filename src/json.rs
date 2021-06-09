@@ -23,24 +23,32 @@ fn untyped_example() -> Result<()> {
     Ok(())
 }
 
+
+fn unpack_serde_value__to__f64_triple (v: &Value) -> [f64; 3] {
+    [
+        v[0].as_f64().unwrap(),
+        v[1].as_f64().unwrap(),
+        v[2].as_f64().unwrap(),
+    ]
+}
+
 fn deserialize_cartesian_points_to_lxmodel(json_in_data: &str) -> Result<()>  {
-    let v: Value = serde_json::from_str(json_in_data)?;
+    let v: Vec<Value> = serde_json::from_str(json_in_data)?;
 
     // Access parts of the data by indexing with square brackets.
-    println!("A Point {}", v[0]["point"]);
+    // println!("A Point {}", v[0]["point"]);
 
-    let x: f64 = v[0]["point"][0].as_f64().unwrap();
-    let y: f64 = v[0]["point"][1].as_f64().unwrap();
-    let z: f64 = v[0]["point"][2].as_f64().unwrap();
+    let mut model: LXModel = LXModel::new(CartesianPoint::new(
+        unpack_serde_value__to__f64_triple(&v[0]["point"])
+    ));
 
-    let mut model: LXModel = LXModel::new(CartesianPoint::new([x,y,z] ));
+    for p in &v {
+        let point = CartesianPoint::new(
+            unpack_serde_value__to__f64_triple(&p["point"])
+        );
 
-
-    model.add_point(CartesianPoint::new([x,y,z] ));
-    // model.add_point(CartesianPoint::new(vec![v[2]["point"]] as Vec<f32>));
-
-    // Load points into lxmodel.
-
+        model.add_point(point)
+    }
 
     Ok(())
 }

@@ -10,13 +10,14 @@ impl LXModel {
     pub fn new(first_point: CartesianPoint) -> LXModel {
         LXModel {
             points: vec![first_point],
-            num_points: first_point.dimmensions.len(),
+            num_points: 1,
         }
     }
 
     pub fn add_point(&mut self, point: CartesianPoint) {
 
-        self.points.push(point)
+        self.points.push(point);
+        self.num_points = self.points.len();
     }
 }
 
