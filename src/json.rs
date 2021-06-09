@@ -1,4 +1,6 @@
 use serde_json::{Result, Value};
+use crate::lxmodel::LXModel;
+use crate::geometry::CartesianPoint;
 
 fn untyped_example() -> Result<()> {
     // Some JSON input data as a &str. Maybe this comes from the user.
@@ -21,11 +23,21 @@ fn untyped_example() -> Result<()> {
     Ok(())
 }
 
-fn deserialize_cartesian_points(json_in_data: &str) -> Result<()>  {
+fn deserialize_cartesian_points_to_lxmodel(json_in_data: &str) -> Result<()>  {
     let v: Value = serde_json::from_str(json_in_data)?;
 
     // Access parts of the data by indexing with square brackets.
     println!("A Point {}", v[0]["point"]);
+
+    let x: f64 = v[0]["point"][0].as_f64().unwrap();
+    let y: f64 = v[0]["point"][1].as_f64().unwrap();
+    let z: f64 = v[0]["point"][2].as_f64().unwrap();
+
+    let mut model: LXModel = LXModel::new(CartesianPoint::new([x,y,z] ));
+
+
+    model.add_point(CartesianPoint::new([x,y,z] ));
+    // model.add_point(CartesianPoint::new(vec![v[2]["point"]] as Vec<f32>));
 
     // Load points into lxmodel.
 
@@ -36,11 +48,11 @@ fn deserialize_cartesian_points(json_in_data: &str) -> Result<()>  {
 
 #[cfg(test)]
 mod tests {
-    use crate::json::{untyped_example, deserialize_cartesian_points};
+    use crate::json::{untyped_example, deserialize_cartesian_points_to_lxmodel};
     use std::net::SocketAddr;
     use std::fs;
     use std::process::exit;
-    use crate::lxmodel::lxmodel;
+    use crate::lxmodel::LXModel;
 
     #[test]
     fn sanity() {
@@ -55,7 +67,7 @@ mod tests {
             .expect("Something went wrong reading the file");
 
         println!("{}", in_json_data);
-        deserialize_cartesian_points(&in_json_data);
+        deserialize_cartesian_points_to_lxmodel(&in_json_data);
 
         Ok(())
     }

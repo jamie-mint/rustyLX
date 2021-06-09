@@ -1,4 +1,15 @@
+
+#[derive(Copy, Clone)]
 pub struct CartesianPoint { // a float
-    dimmensions: Vec<f64>,
-    num_dimmensions: u16,
+    pub(crate) dimmensions: [f64; 3],
+    num_dimmensions: usize,
+}
+
+impl CartesianPoint {
+    pub fn new(dimmensions: [f64; 3]) -> CartesianPoint {
+        CartesianPoint {
+            dimmensions,
+            num_dimmensions: dimmensions.len(),
+        }
+    }
 }

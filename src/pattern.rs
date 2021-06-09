@@ -1,8 +1,8 @@
-use crate::lxmodel::lxmodel;
+use crate::lxmodel::LXModel;
 use crate::parameter::Parameter;
 
 struct Pattern {
-    model: lxmodel,
+    model: LXModel,
     temporal_scale: u32,
     parameters: Vec<Parameter>
 }
