@@ -53,7 +53,7 @@ impl OpcDatagram {
         println!("hi debug")
     }
 
-    pub fn fill_magenta(&mut self) {
+    pub fn test_fill_magenta(&mut self) {
         let mut slice = &mut self.buffer[OFFSET_DATA ..];
     }
 
@@ -119,7 +119,7 @@ mod tests {
     #[test]
     fn test_send_to_zestyping_opc_server() {
         let mut migram = OpcDatagram::new( 0, 4097);
-        migram.fill_magenta();
+        migram.test_fill_magenta();
         migram.send_opc();
     }
 }

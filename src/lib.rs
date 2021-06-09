@@ -1,6 +1,11 @@
 pub mod engine;
 mod color;
 mod net;
+mod pattern;
+mod parameter;
+mod lxmodel;
+mod geometry;
+mod persistence;
 
 pub mod front_of_house {
     mod hosting {
